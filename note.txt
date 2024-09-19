@@ -3,3 +3,19 @@
 - nest generate controller user
 - nest generate service user user
 - nest generate provider connection user
+
+// using mikroorm
+yarn add @mikro-orm/core @mikro-orm/mariadb @mikro-orm/nestjs
+yarn add -D @mikro-orm/cli @mikro-orm/sql-highlighter @mikro-orm/migrations
+
+add this config to package.json:
+"mikro-orm": {
+  "configPaths": [
+    "./src/database/mikro-orm.config.ts",
+    "./dist/database/mikro-orm.config.js"
+  ]
+}
+
+yarn run mikro-orm migration:create
+yarn run mikro-orm migration:up
+yarn run mikro-orm migration:down
