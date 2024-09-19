@@ -3,6 +3,7 @@ import {
   Get,
   Header,
   HttpCode,
+  Inject,
   Param,
   Post,
   Query,
@@ -10,6 +11,11 @@ import {
   Res,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { UserService } from './user/user.service';
+import { Connection } from './connection';
+import { MailService } from './mail/mail.service';
+import { UserRepository } from './user-repository';
+import { MemberService } from './member/member.service';
 
 interface UserPayloadResponse {
   name: string;
@@ -19,13 +25,32 @@ interface UserPayloadResponse {
 
 @Controller('/api/users')
 export class UserController {
+  constructor(
+    private service: UserService,
+    private connection: Connection,
+    private mail: MailService,
+    private userRepo: UserRepository,
+    @Inject('EMAIL_ALIAS_COBA_BRO') private emailService: MailService,
+    private memberService: MemberService,
+  ) {}
+
+  @Get('/connection')
+  getConnection() {
+    this.userRepo.save();
+    this.mail.send();
+    this.emailService.send();
+
+    console.info(this.memberService.getConnectionName());
+    this.memberService.sendEmail();
+
+    return this.connection.getName();
+  }
+
   @Get('/hello')
-  getHello(
-    @Query('first_name') firstName: string,
-    @Query('last_name') lastName: string,
-    @Res() res: Response,
-  ) {
-    return res.send(`Hello ${firstName} ${lastName}`);
+  getHello(@Query('name') name: string, @Res() res: Response) {
+    console.log(this.service.sayHello(name));
+
+    return res.send(this.service.sayHello(name));
   }
 
   @Get('/view/hello')
