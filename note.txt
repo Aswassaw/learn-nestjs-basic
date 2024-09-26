@@ -3,6 +3,7 @@
 - nest generate controller user
 - nest generate service user user
 - nest generate provider connection user
+- nest generate middleware log middleware
 
 // using mikroorm
 yarn add @mikro-orm/core @mikro-orm/mariadb @mikro-orm/nestjs
