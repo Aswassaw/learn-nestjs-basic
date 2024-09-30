@@ -4,6 +4,8 @@
 - nest generate service user user
 - nest generate provider connection user
 - nest generate middleware log middleware
+- nest generate filter validation filter
+- nest generate pipe validation pipe
 
 // using mikroorm
 yarn add @mikro-orm/core @mikro-orm/mariadb @mikro-orm/nestjs
