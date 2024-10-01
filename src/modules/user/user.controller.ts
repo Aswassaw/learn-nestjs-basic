@@ -26,6 +26,7 @@ import { TimeInterceptor } from 'src/time.interceptor';
 import { User } from 'src/database/entities/User';
 import { Auth } from 'src/auth.decorator';
 import { RoleGuard } from 'src/guard/role.guard';
+import { Role } from 'src/guard/role.decorator';
 
 interface CreatePayload {
   firstName: string;
@@ -41,7 +42,8 @@ export class UserController {
   ) {}
 
   @Get('/current')
-  @UseGuards(new RoleGuard(['admin']))
+  @Role('admin', 'user')
+  @UseGuards(RoleGuard)
   current(@Auth() user: User) {
     return user.lastName;
   }
