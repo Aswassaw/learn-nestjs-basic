@@ -6,6 +6,8 @@
 - nest generate middleware log middleware
 - nest generate filter validation filter
 - nest generate pipe validation pipe
+- nest generate decorator auth decorator
+- nest generate guard role guard
 
 // using mikroorm
 yarn add @mikro-orm/core @mikro-orm/mariadb @mikro-orm/nestjs

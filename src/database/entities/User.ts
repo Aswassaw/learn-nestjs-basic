@@ -8,4 +8,7 @@ export class User extends BaseEntity {
 
   @Property({ length: 50, nullable: true })
   lastName?: string;
+
+  @Property({ length: 10, default: "user" })
+  role: string;
 }

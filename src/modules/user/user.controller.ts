@@ -8,6 +8,8 @@ import {
   ParseIntPipe,
   Post,
   Res,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { Logger } from 'winston';
@@ -20,6 +22,10 @@ import {
   LoginUserRequest,
   loginUserRequestValidation,
 } from 'src/model/login.model';
+import { TimeInterceptor } from 'src/time.interceptor';
+import { User } from 'src/database/entities/User';
+import { Auth } from 'src/auth.decorator';
+import { RoleGuard } from 'src/guard/role.guard';
 
 interface CreatePayload {
   firstName: string;
@@ -34,13 +40,19 @@ export class UserController {
     private validationService: ValidationService,
   ) {}
 
+  @Get('/current')
+  @UseGuards(new RoleGuard(['admin']))
+  current(@Auth() user: User) {
+    return user.lastName;
+  }
+
   @Post('/login')
+  @UseInterceptors(TimeInterceptor)
   login(
     @Body(new ValidationPipe(loginUserRequestValidation))
     body: LoginUserRequest,
-    @Res() res: Response,
   ) {
-    return res.json(body);
+    return body;
   }
 
   @Get('/')
@@ -49,7 +61,9 @@ export class UserController {
       const users = await this.userService.findAll();
       this.logger.info('USER GETTED');
 
-      return res.status(200).json(users);
+      return res.status(200).json({
+        data: users,
+      });
     } catch (error) {
       return res.status(500).send('INTERNAL SERVER ERROR');
     }

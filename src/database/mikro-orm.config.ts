@@ -21,4 +21,5 @@ export default defineConfig({
   migrations: {
     path: './src/database/migrations',
   },
+  allowGlobalContext: true,
 });
