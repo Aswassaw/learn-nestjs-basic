@@ -20,6 +20,21 @@ export default defineConfig({
   logger: logger.log.bind(logger),
   migrations: {
     path: './src/database/migrations',
+    tableName: 'mikro_orm_migrations',
+    transactional: true,
+    allOrNothing: true,
   },
-  allowGlobalContext: true,
+  // allowGlobalContext: true,
+  pool: {
+    min: 1,
+    max: 20,
+    acquireTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
+  },
+  driverOptions: {
+    connection: {
+      queryTimeout: 10000,
+      charset: 'utf8mb4',
+    },
+  },
 });
